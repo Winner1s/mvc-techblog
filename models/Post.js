@@ -38,6 +38,6 @@ post.init(
     underscored: true,
     modelName: 'post',
   }
-);
 
-module.exports = Post;
+
+module.exports = post;

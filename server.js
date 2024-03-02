@@ -29,6 +29,10 @@ const sessionConfig = {
   })
 };
 
+const express = require('express');
+const app = express();
+
+
 app.use(session(sessionConfig));
 
 // Inform express.js on which template engine to use
