@@ -1,66 +1,92 @@
-//used to handle user login and out and creation
-const router = require('express').Router();
-const { User } = require('../../models');
+const express = require("express");
+const router = express.Router();
+const { User, Blog, Comment } = require('../../models');
+const bcrypt = require('bcrypt');
+const e = require("express");
 
-// This is to sign up new users
-router.post('/', async (req, res) => {
-  try {
-    const userData = await User.create(req.body);
-
-    req.session.save(() => {
-      req.session.user_id = userData.id;
-      req.session.logged_in = true;
-
-      res.status(200).json(userData);
+router.get("/", (req, res) => {
+  User.findAll({ include: [Blog, Comment] })
+    .then(dbUsers => {
+      res.json(dbUsers);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
     });
-  } catch (err) {
-    res.status(400).json(err);
-  }
 });
 
-// This is to log in to account.
-router.post('/login', async (req, res) => {
-  try {
+router.get("/:id", (req, res) => {
+  req.session.destroy();
+  res.redirect('/');
+})
 
-    const userData = await User.findOne({ where: { username: req.body.username } });
+router.get('/:id', (req, res) => {
+  User.findByPk(req.params.id, { include: [Blog, Comment] })
+    .then(dbUser => {
+      res.json(dbUser);
+    })
+    .catch(err => {
+      res.status(500).json({"an error occurred", err});
+    });
+});
 
-
-    if (!userData) {
-      res
-        .status(400)
-        .json({ message: 'Incorrect username or password, please try again' });
+router.post('/login', (req, res) => {
+  User.findOne({
+    where: {
+      username: req.body.username
+    }
+  }).then(foundUser => {
+    if (!foundUserUser) {
+      res.status(400).json({ message: 'No user found with that username' });
       return;
     }
-
-    const validPassword = await userData.checkPassword(req.body.password);
-
-    if (!validPassword) {
-      res
-        .status(400)
-        .json({ message: 'Incorrect username or password, please try again' });
-      return;
+    if (!bcrypt.compareSync(req.body.password, foundUser.password)) {
+      req.session.user = {
+        id: foundUser.id,
+        username: foundUser.username
+      }
+      return res.json(foundUser);
     }
-
-    req.session.save(() => {
-      req.session.user_id = userData.id;
-      req.session.logged_in = true;
+    else {
       
-      res.json({ user: userData, message: 'You are now logged in!' });
-    });
-
-  } catch (err) {
-    res.status(400).json(err);
-  }
+      return res.status(400).json({ message: 'Incorrect password' });
+    }
+  })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({ msg:"an error occurred", err});
+      });
 });
 
-router.post('/logout', (req, res) => {
-  if (req.session.logged_in) {
-    req.session.destroy(() => {
-      res.status(204).end();
+router.put('/:id', (req, res) => {
+  User.update(req.body, { 
+    where: {
+      id: req.params.id
+    },
+    individualHooks: true 
+    })
+    .then(updatedUser => {
+      res.json(updatedUser);
+    })  
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ msg: "an error occurred", err});
     });
-  } else {
-    res.status(404).end();
-  }
+});
+
+router.delete('/:id', (req, res) => {
+  User.destroy({
+    where: {
+      id: req.params.id
+    }
+  })
+  .then(deletedUser => {
+    res.json(deletedUser);
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).json({ msg: "an error occurred", err});
+  });
 });
 
 module.exports = router;
