@@ -23,4 +23,4 @@ blog.init (
   });
 
 
-model.exports = blog;
+module.exports = blog;

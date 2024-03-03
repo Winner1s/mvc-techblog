@@ -26,7 +26,7 @@ router.get('/:id', (req, res) => {
       res.json(dbUser);
     })
     .catch(err => {
-      res.status(500).json({"an error occurred", err});
+      res.status(500).json({ msg: "an error occurred", err});
     });
 });
 

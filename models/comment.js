@@ -21,4 +21,4 @@ Comment.init({
     modelName: 'comment', 
 });
 
-model.exports=Comment;
+module.exports=Comment;

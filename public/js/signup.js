@@ -1,25 +1,28 @@
-const loginForm = document.querySelector("#login");
+const signupForm = document.querySelector("#signup");
 
-loginForm.addEventListener("submit", event => {
+signupForm.addEventListener("submit", event => {
     event.preventDefault();
 
-    const usernameInput = document.querySelector("#loginUsername");
-    const passwordInput = document.querySelector("#loginPassword");
+    const usernameInput = document.querySelector("#signupUsername");
+    const passwordInput = document.querySelector("#signupPassword");
 
     const username = usernameInput.value;
     const password = passwordInput.value;
 
+    // Perform client-side validation
     if (!username || !password) {
         alert("Please enter both username and password");
         return;
     }
+
+    // You can add more validation logic here if needed
 
     const userObj = {
         username: username,
         password: password,
     };
 
-    fetch("/api/users/login", {
+    fetch("/api/users/", {
         method: "POST",
         body: JSON.stringify(userObj),
         headers: {
@@ -28,14 +31,14 @@ loginForm.addEventListener("submit", event => {
     })
     .then(res => {
         if (res.ok) {
-            console.log("User is logged in");
+            console.log("User is signed up");
             location.href = "/dashboard";
         } else {
-            throw new Error("Failed to log in");
+            throw new Error("Failed to sign up");
         }
     })
     .catch(error => {
-        console.error("Error logging in:", error);
+        console.error("Error signing up:", error);
         alert("Please try again");
     });
 });
