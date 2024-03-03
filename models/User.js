@@ -40,4 +40,4 @@ User.init(
   
   });
 
-module.exports = User;
+model.exports = User;

@@ -12,4 +12,4 @@ User.hasMany(Comment);
 Comment.belongsTo(user);
 
 
-module.exports = { User, Post };
+model.exports = { User, Post };
