@@ -5,12 +5,16 @@ signupForm.addEventListener("submit", event => {
 
     const usernameInput = document.querySelector("#signupUsername");
     const passwordInput = document.querySelector("#signupPassword");
+    const emailInput = document.querySelector("#signupEmail");
+    const phoneNumberInput = document.querySelector("#signupphone#");
 
     const username = usernameInput.value;
     const password = passwordInput.value;
+    const email = emailInput.value;
+    const phoneNumber = phoneNumberInput.value;
 
     // Perform client-side validation
-    if (!username || !password) {
+    if (!username || !password || !email || !phoneNumber) {
         alert("Please enter both username and password");
         return;
     }
@@ -20,6 +24,8 @@ signupForm.addEventListener("submit", event => {
     const userObj = {
         username: username,
         password: password,
+        email: email,
+        phoneNumber: phoneNumber
     };
 
     fetch("/api/users/", {
