@@ -6,7 +6,7 @@
 
 body {
   height: 100vh;
-  background-color: azure;
+  background-color: rgb(23, 41, 41);
 }
 
 header, h1 {
@@ -28,7 +28,7 @@ header a {
 }
 
 .card {
-  background-color: azure;
+  background-color: rgb(12, 25, 25);
 }
 
 .card h5, .card p {
