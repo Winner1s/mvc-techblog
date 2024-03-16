@@ -2,7 +2,7 @@
 
 ## Deployed program
 
-1. Github - [Github-Repository](https://github.com/Winner1s/orm-e-commerce)
+1. Github - [Github-Repository](https://github.com/Winner1s/mvc-techblog)
 2. Heroku -  [Heroku-Deployed](https://peaceful-sands-92578-10aa0f7cc23c.herokuapp.com/)
 
 ## Table of Contents
